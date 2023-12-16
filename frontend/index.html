@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/styles/style.css" />
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <title>Student Register</title>
+</head>
+
+<body>
+    <div class="display-5 text-light bg-black text-center p-3">
+        Register New Students
+    </div>
+
+    <main>
+        <!-- Register Form -->
+        <section class="container-lg mt-3">
+            <div class="display-6">Register Form</div>
+            <form class="offset-1 my-3" onsubmit="grab_info_form(); return false;" id="student-form">
+
+                <!--Name-->
+                <div class="row mb-3">
+                    <label for="inputName" class="col-sm-2 col-form-label">Name:</label>
+                    <div class="col-sm-10">
+                        <input required type="text" class="form-control" id="inputName" placeholder="Type your name here" />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <!--Email-->
+                    <label for="emailInput" class="col-sm-2 col-form-label">Email:</label>
+                    <div class="col-sm-4">
+                        <input required type="email" class="form-control" id="inputEmail" placeholder="name@email.com" />
+                    </div>
+                    <!--Phone Number-->
+                    <label for="phoneNumber" class="col-sm-2 col-form-label">Phone Number:</label>
+                    <div class="col-sm-4">
+                        <input required type="text" class="form-control" id="phoneNumber" />
+                    </div>
+                </div>
+
+                <!-- Course Options -->
+                <div class="row mb-3">
+                    <label for="courseSelection" class="col-sm-2 col-form-label">Courses:</label>
+                    <div class="col-sm-4">
+                        <select required class="form-select" id="courseSelection">
+                            <option value="" selected>Choose One</option>
+                            <option value="1">Angular</option>
+                            <option value="2">React</option>
+                            <option value="3">NodeJS</option>
+                            <option value="4">Data Analysis</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!--Radio Buttons-->
+                <fieldset class="row mb-3">
+                    <legend class="col-form-label col-sm-2 pt-0">Class period:</legend>
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            <input required class="form-check-input" type="radio" name="classPeriod" id="checkBoxMorning"
+                                value="1" />
+                            <label class="form-check-label" for="checkBoxMorning">
+                                Morning
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="classPeriod" id="checkBoxAfternoon"
+                                value="2" />
+                            <label class="form-check-label" for="checkBoxAfternoon">
+                                Afternoon
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="classPeriod" id="checkBoxEvening"
+                                value="3" />
+                            <label class="form-check-label" for="checkBoxEvening">
+                                Evening
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+                <button type="submit" class="btn btn-success btn-lg" id="register-button">Register</button>
+            </form>
+        </section>
+
+        <div class="row"><hr class="col-10 offset-1 border-3 border-black"></div>
+        
+
+        <!-- Table of Students -->
+        <section class="container my-3">
+            <div class="display-6">Students List</div>
+            <table class="table table-striped mt-3" id="student-table">
+                <thead>
+                  <tr class="border-bottom-6 border-black">
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col" class="d-none d-md-table-cell">Email</th>
+                    <th scope="col" class="d-none d-lg-table-cell">Phone Number</th>
+                    <th scope="col">Course</th>
+                    <th scope="col">Class Period</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <!-- The data will go here -->
+                </tbody>
+              </table>
+        </section>
+    </main>
+
+    <!-- JavaScript links -->
+    <script src="/src/JQuery.js"></script>
+    <script src="/src/maskPlugin.js"></script>
+    <script src="/src/script.js"></script>
+
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous">
+    </script>
+</body>
+
+</html>
