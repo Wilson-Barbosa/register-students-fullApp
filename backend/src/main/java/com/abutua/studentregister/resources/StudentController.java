@@ -1,12 +1,16 @@
 package com.abutua.studentregister.resources;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.abutua.studentregister.models.Student;
 
@@ -48,5 +52,32 @@ public class StudentController {
         // The return is like this because the list starts with index 0
         return ResponseEntity.ok(listOfStudents.get(id -1));
     }
+
+
+    // Method that allows a new student to be saved on the server
+    @PostMapping("students")
+    
+    // @RequestBody takes the student from the body of the request
+    public ResponseEntity<Student> saveStudent(@RequestBody Student student){
+
+        // Making sure the new student's id is correct within the ArrayList
+        student.setId(listOfStudents.size() + 1);
+
+        // Adding the user to the list
+        listOfStudents.add(student);
+
+        // Creating the URI that will be included in response for the client
+        URI location = ServletUriComponentsBuilder
+            .fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(student.getId())
+            .toUri();
+
+        // Finally you can return both the status code 201 and the new resource with it's path
+        return ResponseEntity.created(location).body(student);
+    }
+
+
+
 
 }
