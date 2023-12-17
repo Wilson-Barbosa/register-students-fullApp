@@ -1,25 +1,8 @@
 //phone number's input mask
-$("#phoneNumber").mask("(00) 00000-0000");
+$("#phone").mask("(00) 00000-0000");
 
 //array for course option
-const courseArray = [
-    {
-        id: 1,
-        course: "Angular",
-    },
-    {
-        id: 2,
-        course: "React",
-    },
-    {
-        id: 3,
-        course: "NodeJS",
-    },
-    {
-        id: 4,
-        course: "Data Analysis",
-    },
-];
+const courseArray = [];
 
 //array for class period
 const periodArray = [
@@ -39,32 +22,7 @@ const periodArray = [
 ];
 
 //array of students where their data will be stored
-let studentArray = [
-    {
-        id: 1,
-        name: "Paulo de Tarso",
-        email: "paulo@gmail.com",
-        phoneNumber: "(11) 65455-7892",
-        course: 2,
-        period: 1,
-    },
-    {
-        id: 2,
-        name: "Juliana Oliveira",
-        email: "juliana@hotmail.com",
-        phoneNumber: "(15) 89915-5677",
-        course: 1,
-        period: 3,
-    },
-    {
-        id: 3,
-        name: "Francisco Bianchi",
-        email: "bianchi@hotmail.com",
-        phoneNumber: "(19) 78455-2314",
-        course: 3,
-        period: 2,
-    }
-];
+let studentArray = [];
 
 
 
@@ -86,27 +44,42 @@ function grab_info_form() {
         }
     }
 
+    // This is an object created with the input's values
     let newStudent = {
 
-        id: studentArray.length + 1,
         name: document.getElementById("inputName").value,
         email: document.getElementById("inputEmail").value,
-        phoneNumber: document.getElementById("phoneNumber").value,
-        course: document.getElementById("courseSelection").value,
+        phone: document.getElementById("phone").value,
+        idCourse: document.getElementById("courseSelection").value,
         period: selectPeriod()
 
     };
 
 
+
+    // Making the POST to the server
+    $.ajax({
+        url: "http://localhost:8080/students",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(newStudent),
+        success: (response) => {
+
+            //sends the info to the screen
+            studentArray.push(response)
+            gets_one_student_info(response);
+
+            //reseting the form
+            document.getElementById("student-form").reset();
+        }
+    });
+
+
     //pushes the new student's info to the studentArray
     //the insertion happens even without this push, but I'm gonna put this in here just to be cool
-    studentArray.push(newStudent);
+    ;
 
-    //sends the info to the screen
-    gets_one_student_info(newStudent);
 
-    //reseting the form
-    document.getElementById("student-form").reset();
 }
 
 
@@ -131,15 +104,15 @@ function gets_one_student_info(student) {
     emailCell.appendChild(newEmail);
 
     //inserting phone number
-    let newPhone = document.createTextNode(student.phoneNumber);
+    let newPhone = document.createTextNode(student.phone);
     let phoneCell = newRow.insertCell();
     phoneCell.className = 'd-none d-lg-table-cell';
     phoneCell.appendChild(newPhone);
 
     //inserts the matching course
     for (let j = 0; j < courseArray.length; j++) {
-        if (student.course == courseArray[j].id) {
-            let newCourse = document.createTextNode(courseArray[j].course);
+        if (student.idCourse == courseArray[j].id) {
+            let newCourse = document.createTextNode(courseArray[j].name);
             newRow.insertCell().appendChild(newCourse);
         }
     }
@@ -154,18 +127,53 @@ function gets_one_student_info(student) {
 }
 
 
-//iterates the studentArray and passes each student as argument
-//this will be called later, when the page is loaded
+// Function that makes an HTTP request and get a list of all students available
+// Executed on page load
 function load_all_students() {
-    for (let i = 0; i < studentArray.length; i++) {
-        gets_one_student_info(studentArray[i]);
-    }
+
+    $.getJSON("http://localhost:8080/students", (response) => {
+
+        // Each student object is pushed to the studentArray
+        for (let student of response) {
+            studentArray.push(student);
+        }
+
+        // Each student's info is displayed on the screen on it's individual row
+        for (let i = 0; i < studentArray.length; i++) {
+            gets_one_student_info(studentArray[i]);
+        }
+    });
+
 }
 
 
+// Function that gets the information on courses and renders them onto the screen
+function load_all_courses() {
+
+    $.ajax({
+        url: "http://localhost:8080/courses",
+        type: "GET",
+        async: false,   //async request
+        success: (response) => {
+
+            for (let course of response) {
+                // Pushing each course object into courseArray
+                courseArray.push(course);
+
+                // Adding each course in the select element
+                document.getElementById("courseSelection").innerHTML += `<option value="${course.id}">${course.name}</option>`;
+            }
+        }
+
+    });
+}
 
 
 /* ----------------- Info displayed on screen ----------------- */
 
-//load all students information to the screen when the page is loaded
+// Load all courses and renders them in the screen before loading the students
+load_all_courses();
+
+// Load all students information to the screen when the page is loaded
 load_all_students();
+

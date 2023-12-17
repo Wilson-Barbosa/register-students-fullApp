@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,20 +14,21 @@ import jakarta.annotation.PostConstruct;
 
 
 @RestController
+@CrossOrigin
 public class CourseController {
 
     // Creating an empty list of courses that will be populated later
     private List<Course> listOfCourses = new ArrayList<>();
 
     
+    // Method that creates the mock users and stores them in the ArrayList
     @PostConstruct // This annotation ensures the method will be executed when this class is instantiated
     public List<Course> onInit() {
 
         // Adding mock data to be used for testing
         listOfCourses.add(new Course(1, "Angular"));
         listOfCourses.add(new Course(2, "React"));
-        listOfCourses.add(new Course(3, "NodeJs"));
-        listOfCourses.add(new Course(4, "Data Analysis"));
+        listOfCourses.add(new Course(3, "Data Analysis"));
 
         return listOfCourses;
     }

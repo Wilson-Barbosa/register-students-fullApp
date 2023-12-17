@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import com.abutua.studentregister.models.Student;
 import jakarta.annotation.PostConstruct;
 
 @RestController
+@CrossOrigin
 public class StudentController {
     
 
@@ -29,9 +31,9 @@ public class StudentController {
         
         // Defining mock data to be used for testing
         // I'm adding a new student by calling the constructor method within the Student.java class
-        listOfStudents.add(new Student(1, "Rafael", "rafael@gmail.com", "11984521010", 2, 1));
-        listOfStudents.add(new Student(2, "Wilson", "wilson@gmail.com", "156345786112", 1, 3));
-        listOfStudents.add(new Student(3, "Fernanda", "fernanda@gmail.com", "11963124500", 3, 2));
+        listOfStudents.add(new Student(1, "Rafael", "rafael@gmail.com", "(15) 68497-9876", 2, 1));
+        listOfStudents.add(new Student(2, "Wilson", "wilson@gmail.com", "(68) 78979-8794", 1, 3));
+        listOfStudents.add(new Student(3, "Fernanda", "fernanda@gmail.com", "(12) 36984-7879", 3, 2));
 
         // After the list is create and populated it's returned here
         return listOfStudents;
@@ -56,7 +58,7 @@ public class StudentController {
 
     // Method that allows a new student to be saved on the server
     @PostMapping("students")
-    
+
     // @RequestBody takes the student from the body of the request
     public ResponseEntity<Student> saveStudent(@RequestBody Student student){
 
@@ -76,8 +78,5 @@ public class StudentController {
         // Finally you can return both the status code 201 and the new resource with it's path
         return ResponseEntity.created(location).body(student);
     }
-
-
-
 
 }
