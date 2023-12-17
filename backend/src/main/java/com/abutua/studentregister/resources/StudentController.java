@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.abutua.studentregister.models.Student;
@@ -51,8 +53,13 @@ public class StudentController {
     // Method that returns a single student by it's id
     @GetMapping("students/{id}")
     public ResponseEntity<Student> getStudent(@PathVariable int id){
-        // The return is like this because the list starts with index 0
-        return ResponseEntity.ok(listOfStudents.get(id -1));
+        if(id <= listOfStudents.size()){
+            // If a student exist it's returned here
+            return ResponseEntity.ok(listOfStudents.get(id -1));
+        } else {
+            // If one wasn't found both status code 404 and a message for the user
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found");
+        }
     }
 
 
